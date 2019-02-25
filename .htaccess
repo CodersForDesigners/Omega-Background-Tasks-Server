@@ -1,0 +1,18 @@
+
+<IfModule mod_rewrite.c>
+
+RewriteEngine On
+
+
+
+
+
+# If the URI maps to a file, then do nothing
+# RewriteCond "%{DOCUMENT_ROOT}%{REQUEST_URI}" -f
+# RewriteRule . - [QSA,NC,L]
+
+
+
+
+
+</IfModule>
