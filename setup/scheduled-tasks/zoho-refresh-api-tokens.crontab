@@ -1,0 +1,13 @@
+
+# ~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~
+
+# The following commented lines will be added automatically in the deployment step
+# PATH=/bin:/usr/bin:/usr/local/bin:/var/www/<omega-api-installation>/setup
+# HOME=/var/www/data/<omega-api-installation>/logs/
+SHELL=/bin/sh
+MAILTO="adi@lazaro.in"
+
+# Refresh the Zoho API tokens every 45 minutes
+*/45		*		*		*		*	setup/scheduled-tasks/zoho-refresh-api-tokens.php > __environment/logs/zoho-refresh-api-tokens.log 2>&1
+
+# ~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~
