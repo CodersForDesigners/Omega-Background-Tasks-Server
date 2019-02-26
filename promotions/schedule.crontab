@@ -1,0 +1,7 @@
+
+# ~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~
+
+# Promote things to users every day from 5pm to 12am, at the stroke of the hour
+30		11-17		*		*		*	php promotions/scheduled-task.php >>__environment/logs/promotions.log 2>>__environment/logs/promotions-error.log
+
+# ~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~

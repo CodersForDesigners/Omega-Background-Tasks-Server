@@ -11,6 +11,12 @@ RewriteEngine On
 # RewriteCond "%{DOCUMENT_ROOT}%{REQUEST_URI}" -f
 # RewriteRule . - [QSA,NC,L]
 
+## -/-/-/-/-/-/
+## ~ PROMOTIONS
+## -/-/-/-/-/-/
+# Get a list of all projects from all clients
+RewriteCond "%{REQUEST_METHOD}" GET
+RewriteRule ^/?promotions/?$ promotions/scheduled-task.php [QSA,NC,L]
 
 
 
