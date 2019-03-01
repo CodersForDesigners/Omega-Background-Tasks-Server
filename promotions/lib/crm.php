@@ -118,26 +118,28 @@ function getPromotionalFields () {
  */
 function getUsersWhoNeedToBeServedPromotions ( $page = 1 ) {
 
-	$recordType = 'Leads/search';
+	[ $leads, $thereAreMoreLeads ] = getUsersWhoNeedToBeServedPromotionsWhoAre( 'Lead', 'Leads', $page );
+	[ $prospects, $thereAreMoreProspects ] = getUsersWhoNeedToBeServedPromotionsWhoAre( 'Prospect', 'Contacts', $page );
+
+	return [ array_merge( $leads, $prospects ), $thereAreMoreLeads || $thereAreMoreProspects ];
+
+}
+
+function getUsersWhoNeedToBeServedPromotionsWhoAre ( $type, $rawType, $page ) {
+
+	$recordType = $rawType . '/search';
 	$queryParameters = '?'
 						. 'page=' . $page
+						. '&' . 'per_page=100'
 						. '&' . 'criteria='
-						. '(SMS1:equals:false)'
-							. 'and'
-						. '((Lead_Source:equals:Digital)'
-							. 'or'
-						. '(Lead_Source:equals:' . urlencode( 'Channel Partner' ) . ')'
-							. 'or'
-						. '(Lead_Source:equals:' . urlencode( 'Walk-in at Site' ) . ')'
-							. 'or'
-						. '(Lead_Source:equals:Phone))';
+						. '(Promote_SMS:equals:true)';
 
 	$endpoint = DATA::$apiUrl . $recordType . $queryParameters;
 
 	$responseBody = getAPIResponse( $endpoint, 'GET' );
 
-	if ( empty( $responseBody[ 'data' ] ) )
-		return [ ];
+	if ( empty( $responseBody ) or empty( $responseBody[ 'data' ] ) )
+		return [ [ ], false ];
 
 	$userRecords = array_filter( $responseBody[ 'data' ], function ( $user ) {
 		return ! empty( $user[ 'Project' ] );
@@ -148,10 +150,11 @@ function getUsersWhoNeedToBeServedPromotions ( $page = 1 ) {
 		$user = [
 			'_id' => $userRecord[ 'id' ],
 			'uid' => $userRecord[ 'UID' ],
+			'type' => $type,
 			'uidEncoded' => base64_encode( $userRecord[ 'UID' ] ),
 			'name' => empty( $userRecord[ 'First_Name' ] ) ? $userRecord[ 'Last_Name' ] : $userRecord[ 'First_Name' ],
 			'phoneNumber' => $userRecord[ 'Phone' ],
-			'status' => $userRecord[ 'Lead_Status' ],
+			'status' => $userRecord[ $type . '_Status' ],
 			'source' => $userRecord[ 'Lead_Source' ],
 			'project' => $userRecord[ 'Project' ][ 0 ],
 			'to promote' => [ ]
@@ -180,9 +183,12 @@ function getUsersWhoNeedToBeServedPromotions ( $page = 1 ) {
  * Updates a user with the given id
  * -----
  */
-function updateUser ( $id, $data ) {
+function updateUser ( $id, $data, $type ) {
 
-	$recordType = 'Leads';
+	if ( $type == 'Lead' )
+		$recordType = 'Leads';
+	else if ( $type == 'Prospect' )
+		$recordType = 'Contacts';
 
 	$endpoint = DATA::$apiUrl . $recordType;
 

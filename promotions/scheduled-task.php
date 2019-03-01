@@ -26,6 +26,9 @@ $isCLI = ( php_sapi_name() == 'cli' );
 // Set the header of the response
 header( 'Content-Type: application/json' );
 
+// Log the start of the script
+echo date( '[Y/m/d][g:ia],' ) . 'Started' . PHP_EOL;
+
 require __DIR__ . '/lib/util.php';
 require __DIR__ . '/lib/crm.php';
 require __DIR__ . '/lib/comms.php';
@@ -34,7 +37,7 @@ require __DIR__ . '/lib/templating.php';
 
 
 // Constants
-$numberOfUsersToPromoteTo = 199;
+$numberOfUsersToPromoteTo = 200;
 
 // SMS Sender Ids
 $templatesDir = __DIR__ . '/../__environment/templates/';
@@ -57,9 +60,9 @@ register_shutdown_function( function () {
 		return;
 
 	foreach ( $issues as $issue ) {
-		$errorMessage = date( '[Y/m/d][ga],' ) . $issue . PHP_EOL;
+		$errorMessage = date( '[Y/m/d][g:ia],' ) . $issue . PHP_EOL;
 		if ( $isCLI )
-			fwrite( 'STDERR', $errorMessage );
+			fwrite( STDERR, $errorMessage );
 		else
 			echo $errorMessage;
 	}
@@ -128,8 +131,8 @@ do {
 				sleep( 1 );	// This is so the Zoho API has time to breathe
 				$updateUserStatus = CRM\updateUser( $user[ '_id' ], [
 					$promotionField => true
-				] );
-				$logMessage = date( '[Y/m/d][ga],' ) . 'Promoted ' . $promotion . ' to ' . $user[ 'name' ] . ',' . $uid . PHP_EOL;
+				], $user[ 'type' ] );
+				$logMessage = date( '[Y/m/d][g:ia],' ) . 'Promoted ' . $promotion . ' to ' . $user[ 'name' ] . ',' . $uid . ',' . $user[ 'type' ] . PHP_EOL;
 				echo $logMessage;
 				$atleastOneThingWasPromotedToThisUser = true;
 			}
@@ -162,3 +165,5 @@ do {
 		and
 	$thereAreMoreUsers
 );
+
+echo date( '[Y/m/d][g:ia],' ) . 'Finished' . PHP_EOL;

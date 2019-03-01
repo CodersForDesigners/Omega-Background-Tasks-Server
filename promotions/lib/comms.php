@@ -88,6 +88,9 @@ function getAPIResponse ( $endpoint, $method, $data = [ ] ) {
 
 /*
  *
+ * Send a transactional SMS to a given phone number.
+ * 	Use the specified template and data.
+ *
  * Error codes:
  * 	21. The SMS did was not sent for some reason.
  *
