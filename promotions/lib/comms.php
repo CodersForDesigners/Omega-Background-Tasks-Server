@@ -88,6 +88,30 @@ function getAPIResponse ( $endpoint, $method, $data = [ ] ) {
 
 /*
  *
+ * Get the SMS credit balance.
+ *
+ * Error codes:
+ * 	21. The SMS credit balance could not be retrieved for some reason.
+ *
+ */
+function getSMSCreditBalance () {
+
+	$endpoint = DATA::$apiUrl . 'ADDON_SERVICES/BAL/TRANSACTIONAL_SMS';
+
+	$response = getAPIResponse( $endpoint, 'GET' );
+	$response = json_decode( $response, true );
+
+	if ( $response[ 'Status' ] != 'Success' ) {
+		$errorMessage = $response[ 'Status' ] . ': ' . ( $response[ 'Details' ] ?? '' );
+		throw new \Exception( $errorMessage, 21 );
+	}
+
+	return ( float ) $response[ 'Details' ];
+
+}
+
+/*
+ *
  * Send a transactional SMS to a given phone number.
  * 	Use the specified template and data.
  *

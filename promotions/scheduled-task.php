@@ -167,3 +167,22 @@ do {
 );
 
 echo date( '[Y/m/d][g:ia],' ) . 'Finished' . PHP_EOL;
+
+// Nofify admins of operation status
+$creditBalance = null;
+try {
+	$creditBalance = Comms\getSMSCreditBalance();
+}
+catch ( \Exception $e ) {
+	$issues[ ] = 'Could not retrieve the SMS credit balance:' . $e->getMessage();
+}
+
+$message = $numberOfUsersPromotedTo . ' users were promoted to on ' . date( 'd/m/Y' ) . ' at ' . date( 'g:ia' ) . '.';
+if ( ! empty( $creditBalance ) )
+	$message .= PHP_EOL . 'SMS credit remaining is ' . $creditBalance . '.' . PHP_EOL;
+Comms\sendSMS( '+917760118668', 'SEYONI', 'Seyonii Logs', [
+	'1' => 'Hey Adi, ' . PHP_EOL . $message
+] );
+Comms\sendSMS( '+919886094212', 'SEYONI', 'Seyonii Logs', [
+	'1' => 'Hey Mark, ' . PHP_EOL . $message
+] );
