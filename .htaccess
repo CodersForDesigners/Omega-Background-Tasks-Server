@@ -1,4 +1,11 @@
 
+# Disable redirects with trailing slashes when URLs match the directory paths
+DirectorySlash Off
+
+
+
+
+
 <IfModule mod_rewrite.c>
 
 RewriteEngine On
