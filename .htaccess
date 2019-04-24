@@ -27,5 +27,13 @@ RewriteRule ^/?promotions/?$ promotions/scheduled-task.php [QSA,NC,L]
 
 
 
+## -/-/-/-/-/-/
+## ~ CUSTOMERS
+## -/-/-/-/-/-/
+# Prepare new customers; assign them UIDs and salepeople
+RewriteCond "%{REQUEST_METHOD}" GET
+RewriteRule ^/?customers/prepare/?$ customers/prepare/scheduled-task.php [QSA,NC,L]
+
+
 
 </IfModule>

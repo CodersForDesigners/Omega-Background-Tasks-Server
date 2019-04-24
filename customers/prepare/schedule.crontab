@@ -1,0 +1,7 @@
+
+# ~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~
+
+# Prepare customers, i.e. set their UIDs and assign them to salespeople
+*		*		*		*		*	php customers/prepare/scheduled-task.php >>__environment/logs/customer-preparation.log 2>>__environment/logs/customer-preparation-error.log
+
+# ~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~
