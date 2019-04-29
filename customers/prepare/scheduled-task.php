@@ -87,15 +87,24 @@ $currentAssigneeId = $salespeopleIds[ array_search(
 	$salespersonId__OfMostRecentCustomer,
 	$salespeopleIds
 ) ];
+$ourUserIds = [
+	'3261944000000158021',	// Omega Bot
+		'3744182000000197013',	// Omega Bot (sandbox)
+	'3261944000006440019',	// Omega Archive Bot
+		'3744182000000258001'	// Omega Archive Bot (sandbox)
+];
 foreach ( $customers as $customer ) {
-	$currentAssigneeIndex = ( array_search( $currentAssigneeId, $salespeopleIds ) + 1 )
-							% count( $salespeople );
-	$currentAssigneeId = $salespeopleIds[ $currentAssigneeIndex ];
-	$requestBody[ ] = [
+	$requestBodyForThisCustomer = [
 		'id' => $customer[ '_id' ],
-		'UID' => $customer[ 'uid' ],
-		'Owner' => $currentAssigneeId
+		'UID' => $customer[ 'uid' ]
 	];
+	if ( in_array( $customer[ 'Owner' ][ 'id' ], $ourUserIds ) ) {
+		$currentAssigneeIndex = ( array_search( $currentAssigneeId, $salespeopleIds ) + 1 )
+								% count( $salespeople );
+		$currentAssigneeId = $salespeopleIds[ $currentAssigneeIndex ];
+		$requestBodyForThisCustomer[ 'Owner' ] = $currentAssigneeId;
+	}
+	$requestBody[ ] = $requestBodyForThisCustomer;
 }
 // Update the customers
 try {

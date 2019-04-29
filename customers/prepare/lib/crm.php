@@ -121,14 +121,6 @@ QUERY;
 	if ( empty( $responseBody ) || empty( $responseBody[ 'data' ] ) )
 		return [ ];
 
-	$customersOwnedByUs = array_filter( $responseBody[ 'data' ], function ( $customer ) {
-		return in_array(
-			$customer[ 'Owner' ][ 'id' ],
-			// our production user id, our sandbox user id
-			[ '3261944000000158021', '3744182000000197013' ]
-		);
-	} );
-
 	$customers = array_map( function ( $customer ) {
 		return [
 			'Owner' => $customer[ 'Owner' ] ?? '',
@@ -136,7 +128,7 @@ QUERY;
 			'created' => $customer[ 'Created_Time' ],
 			'uid' => $customer[ 'Hidden_UID' ]
 		];
-	}, $customersOwnedByUs );
+	}, $responseBody[ 'data' ] );
 
 	return $customers;
 
