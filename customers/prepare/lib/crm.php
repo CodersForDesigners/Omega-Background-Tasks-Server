@@ -21,6 +21,7 @@ set_time_limit( 0 );
 class DATA {
 	public static $apiUrl = 'https://www.zohoapis.com/crm/v2/';
 	// public static $apiUrl = 'https://sandbox.zohoapis.com/crm/v2/';
+	public static $adminUsers;
 	public static $authCredentials;
 }
 
@@ -33,6 +34,9 @@ $authCredentialsFilename = __DIR__ . '/../../../__environment/configuration/zoho
 if ( empty( realpath( $authCredentialsFilename ) ) )
 	sleep( 1 );
 DATA::$authCredentials = json_decode( file_get_contents( $authCredentialsFilename ), true );
+
+// Get the admin users
+DATA::$adminUsers = json_decode( file_get_contents( __DIR__ . '/../../../__environment/configuration/zoho-admin-users.json' ), true );
 
 
 

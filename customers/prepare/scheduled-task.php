@@ -87,12 +87,9 @@ $currentAssigneeId = $salespeopleIds[ array_search(
 	$salespersonId__OfMostRecentCustomer,
 	$salespeopleIds
 ) ];
-$ourUserIds = [
-	'3261944000000158021',	// Omega Bot
-		'3744182000000197013',	// Omega Bot (sandbox)
-	'3261944000006440019',	// Omega Archive Bot
-		'3744182000000258001'	// Omega Archive Bot (sandbox)
-];
+$ourUserIds = array_map( function ( $user ) {
+	return $user[ '_id' ];
+}, CRM\DATA::$adminUsers[ 'users' ] );
 foreach ( $customers as $customer ) {
 	$requestBodyForThisCustomer = [
 		'id' => $customer[ '_id' ],
