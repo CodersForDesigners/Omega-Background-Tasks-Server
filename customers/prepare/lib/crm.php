@@ -228,8 +228,6 @@ function updateCustomers ( $data ) {
 		throw new \Exception( $errorMessage, 13 );
 	}
 
-	return $status;
-
 }
 
 /*

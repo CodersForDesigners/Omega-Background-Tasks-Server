@@ -96,8 +96,9 @@ foreach ( $customers as $customer ) {
 		'UID' => $customer[ 'uid' ]
 	];
 	if ( in_array( $customer[ 'Owner' ][ 'id' ], $ourUserIds ) ) {
-		$currentAssigneeIndex = ( array_search( $currentAssigneeId, $salespeopleIds ) + 1 )
-								% count( $salespeople );
+		$currentAssigneeIndex =
+			( array_search( $currentAssigneeId, $salespeopleIds ) + 1 )
+			% count( $salespeople );
 		$currentAssigneeId = $salespeopleIds[ $currentAssigneeIndex ];
 		$requestBodyForThisCustomer[ 'Owner' ] = $currentAssigneeId;
 	}
